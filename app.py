@@ -3,6 +3,8 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import pandas as pd
+import plotly.express as px
+
 
 df = pd.read_csv(
     'https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
@@ -43,7 +45,6 @@ sidebar = html.Div(
                 dbc.NavLink("Relationship", href="/relationship", active="exact"),
                 dbc.NavLink("Distribution", href="/distribution", active="exact"),
                 dbc.NavLink("Survived", href="/survived", active="exact"),
-
             ],
             vertical=True,
             pills=True,
@@ -66,14 +67,11 @@ app.layout = html.Div([
     [Input("url", "pathname")]
 )
 def render_page_content(pathname):
-    if pathname:
+    if pathname == "/":
         return [
-            html.Br(),
-            html.Div(children=[
-                dcc.Link(page['name'], href=page['relative_path'], className='btn btn-dark m-2 fs-5')
-                for page in dash.page_registry.values()
-            ]),
-            dash.page_container
+            html.H1('POC',
+                    style={'textAlign': 'center'}),
+
         ]
 
 
