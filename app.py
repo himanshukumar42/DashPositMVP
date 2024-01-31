@@ -1,14 +1,17 @@
 import dash
-from dash import html, dcc, dash_table
+from dash import html, dcc
 import dash_bootstrap_components as dbc
-import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
 
 df = pd.read_csv(
     'https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
 
-app = dash.Dash(__name__, pages_folder='pages', use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__,
+                pages_folder='pages',
+                use_pages=True,
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                suppress_callback_exceptions=True)
 
 SIDEBAR_STYLE = {
     "position": "fixed",
@@ -31,7 +34,7 @@ sidebar = html.Div(
         html.H2("Main Menu", className="display-4"),
         html.Hr(),
         html.P(
-            "Posit Connect POC", className="lead"
+            "Posit Connect POC", className="m-2"
         ),
         dbc.Nav(
             [
@@ -52,7 +55,7 @@ sidebar = html.Div(
 content = html.Div(id="page-content", children=[], style=CONTENT_STYLE)
 
 app.layout = html.Div([
-    dcc.Location(id="url"),
+    dcc.Location("url", refresh=False),
     sidebar,
     content
 ])
@@ -72,13 +75,6 @@ def render_page_content(pathname):
             ]),
             dash.page_container
         ]
-    return dbc.Jumbotron(
-        [
-            html.H1("404: Not found", className="text-danger"),
-            html.Hr(),
-            html.P(f"The pathname {pathname} was not recognised..."),
-        ]
-    )
 
 
 if __name__ == '__main__':
