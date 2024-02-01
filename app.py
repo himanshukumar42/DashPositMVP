@@ -67,7 +67,7 @@ def render_page_content(pathname):
         return [
             html.Br(),
             html.Div(children=[
-                dcc.Link(page['name'], href=page['relative_path'], className='btn btn-dark m-2 fs-5')
+                dcc.Link(page['name'], href=page['relative_path'], className='btn btn-primary m-2 fs-5')
                 for page in dash.page_registry.values()
             ]),
             dash.page_container
