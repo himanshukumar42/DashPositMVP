@@ -1,11 +1,17 @@
-from dash import html, dcc, Dash, callback, Input, Output
+from dash import html, dcc, Dash, Input, Output
 import dash
 import plotly.express as px
 import pandas as pd
 import base64
+import dash_auth
 import io
 
 house_price_df = pd.DataFrame()
+
+USER_PASS_MAPPING = {
+    "admin": "admin123",
+    "himanshuk25": "himanshu123",
+}
 
 
 def create_histogram(col_name):
@@ -45,6 +51,8 @@ def parse_contents(contents):
 
 external_css = ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css", ]
 app = Dash(__name__, external_stylesheets=external_css)
+
+dash_auth.BasicAuth(app, USER_PASS_MAPPING)
 
 sidebar = html.Div([
     html.Br(),
