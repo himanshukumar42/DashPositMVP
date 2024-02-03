@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__, path='/intro', name="Intro 📋")
 
-titanic_df = pd.read_csv("titanic.csv")
+df = pd.read_csv("data/uploaded_file.csv")
 
 
 SIDEBAR_STYLE = {

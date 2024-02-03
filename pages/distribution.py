@@ -7,15 +7,15 @@ from dash.dependencies import Input, Output
 
 dash.register_page(__name__, path='/distribution', name="Distribution 📊")
 
-titanic_df = pd.read_csv("titanic.csv")
+df = pd.read_csv("data/uploaded_file.csv")
 
 
 def create_distribution(col_name="Age"):
-    return px.histogram(data_frame=titanic_df, x=col_name, height=600)
+    return px.histogram(data_frame=df, x=col_name, height=600)
 
 
-columns = ["Age", "Fare", "SibSp", "Parch", "Survived", "Pclass", "Sex", "Embarked", "Cabin"]
-dd = dcc.Dropdown(id="dist_column", options=columns, value="Age", clearable=False)
+columns = df.columns
+dd = dcc.Dropdown(id="dist_column", options=columns, value=columns.tolist()[0], clearable=False)
 
 
 layout = html.Div(children=[

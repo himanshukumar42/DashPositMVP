@@ -6,18 +6,18 @@ from dash.dependencies import Input, Output
 
 dash.register_page(__name__, path='/survived', name="Survived Count 📊")
 
-titanic_df = pd.read_csv("titanic.csv")
+df = pd.read_csv("data/uploaded_file.csv")
 
 
 def create_bar_chart(col_name="Sex"):
-    fig = px.histogram(data_frame=titanic_df, x="Survived", color=col_name,
+    fig = px.histogram(data_frame=df, x=col_name, color=col_name,
                        histfunc="count", barmode='group', height=600)
     fig = fig.update_layout(bargap=0.5)
     return fig
 
 
-columns = ["Pclass", "Sex", "Embarked", "Cabin"]
-dd = dcc.Dropdown(id="sel_col", options=columns, value="Sex", clearable=False)
+columns = df.columns
+dd = dcc.Dropdown(id="sel_col", options=columns, value=columns.tolist()[2], clearable=False)
 
 layout = html.Div(children=[
     html.Br(),
