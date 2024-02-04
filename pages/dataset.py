@@ -9,7 +9,7 @@ from dash import html, dash_table, dcc, callback
 import dash_bootstrap_components as dbc
 import uuid
 
-dash.register_page(__name__, path='/dataset', name="Dataset 📋")
+dash.register_page(__name__, title="dataset", path='/dataset', name="Dataset 📋")
 
 df = None
 
@@ -51,8 +51,12 @@ def parse_contents(contents):
     global df
     df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
 
-    file_path = f'{os.getcwd()}/data/uploaded_file.csv'
-    df.to_csv(file_path, index=False)
+    try:
+        file_path = os.path.join(os.getcwd(), "data", 'uploaded_file.csv')
+        df.to_csv(file_path, index=False)
+    except Exception as e:
+        print(str(e))
+        df = None
     return df.to_dict('records')
 
 
@@ -60,7 +64,7 @@ def parse_contents(contents):
 def update_table(contents):
     if contents is None:
         global df
-        df = pd.read_csv("data/uploaded_file.csv").to_dict('records')
+        df = pd.read_csv(os.path.join(os.getcwd(), "data", "uploaded_file.csv")).to_dict('records')
         return df
 
     children = parse_contents(contents)

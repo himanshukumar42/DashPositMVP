@@ -3,10 +3,17 @@ import dash
 from dash import dcc, html, callback
 import plotly.express as px
 from dash.dependencies import Input, Output
+import os
 
-dash.register_page(__name__, path='/survived', name="Survived Count 📊")
+dash.register_page(__name__, title="survived", path='/survived', name="Survived Count 📊")
 
-df = pd.read_csv("data/uploaded_file.csv")
+try:
+    path = os.path.join(os.getcwd(), "data", 'uploaded_file.csv')
+    df = pd.read_csv(path)
+except Exception as e:
+    print(str(e))
+    df = None
+
 
 
 def create_bar_chart(col_name="Sex"):

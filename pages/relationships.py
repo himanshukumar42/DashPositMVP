@@ -4,11 +4,16 @@ from dash import dcc, html, callback
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash.dependencies import Input, Output
+import os
 
-dash.register_page(__name__, path='/relationship', name="Relationship 📈")
+dash.register_page(__name__, title="relationship", path='/relationship', name="Relationship 📈")
 
-df = pd.read_csv("data/uploaded_file.csv")
-
+try:
+    path = os.path.join(os.getcwd(), "data", 'uploaded_file.csv')
+    df = pd.read_csv(path)
+except Exception as e:
+    print(str(e))
+    df = None
 
 def create_scatter_chart(x_axis="Age", y_axis="Fare"):
     return px.scatter(data_frame=df, x=x_axis, y=y_axis, height=600)

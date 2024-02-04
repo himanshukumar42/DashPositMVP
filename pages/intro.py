@@ -2,11 +2,15 @@ import pandas as pd
 import dash
 from dash import html, dash_table, dcc
 import dash_bootstrap_components as dbc
+import os
+dash.register_page(__name__, title="intro", path='/intro', name="Intro 📋")
 
-dash.register_page(__name__, path='/intro', name="Intro 📋")
-
-df = pd.read_csv("data/uploaded_file.csv")
-
+try:
+    path = os.path.join(os.getcwd(), "data", 'uploaded_file.csv')
+    df = pd.read_csv(path)
+except Exception as e:
+    print(str(e))
+    df = None
 
 SIDEBAR_STYLE = {
     "position": "fixed",

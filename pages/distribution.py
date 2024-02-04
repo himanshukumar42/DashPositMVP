@@ -4,11 +4,15 @@ from dash import dcc, html, callback
 
 import plotly.express as px
 from dash.dependencies import Input, Output
+import os
+dash.register_page(__name__, title="distribution", path='/distribution', name="Distribution 📊")
 
-dash.register_page(__name__, path='/distribution', name="Distribution 📊")
-
-df = pd.read_csv("data/uploaded_file.csv")
-
+try:
+    path = os.path.join(os.getcwd(), "data", 'uploaded_file.csv')
+    df = pd.read_csv(path)
+except Exception as e:
+    print(str(e))
+    df = None
 
 def create_distribution(col_name="Age"):
     return px.histogram(data_frame=df, x=col_name, height=600)
