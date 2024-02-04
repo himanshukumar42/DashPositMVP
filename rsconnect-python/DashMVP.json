@@ -1,0 +1,12 @@
+{
+    "http://52.66.134.63/": {
+        "server_url": "http://52.66.134.63/",
+        "filename": "/Users/himanshu/PycharmProjects/DashMVP",
+        "app_url": "http://52.66.134.63/content/ea612337-f4b6-4757-9121-04021095053d/",
+        "app_id": 20,
+        "app_guid": "ea612337-f4b6-4757-9121-04021095053d",
+        "title": "DashMVP",
+        "app_mode": "python-dash",
+        "app_store_version": 1
+    }
+}

@@ -4,21 +4,25 @@ from dash import dcc, html, callback
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash.dependencies import Input, Output
+import os
 
-dash.register_page(__name__, path='/relationship', name="Relationship 📈")
+dash.register_page(__name__, title="relationship", path='/relationship', name="Relationship 📈")
 
-titanic_df = pd.read_csv("titanic.csv")
-
+try:
+    path = os.path.join(os.getcwd(), "data", 'uploaded_file.csv')
+    df = pd.read_csv(path)
+except Exception as e:
+    print(str(e))
+    df = None
 
 def create_scatter_chart(x_axis="Age", y_axis="Fare"):
-    return px.scatter(data_frame=titanic_df, x=x_axis, y=y_axis, height=600)
+    return px.scatter(data_frame=df, x=x_axis, y=y_axis, height=600)
 
 
-columns = ["Age", "Fare", "SibSp", "Parch", "Survived", "Pclass", "Sex", "Embarked", "Cabin"]
+columns = df.columns
 
-x_axis = dcc.Dropdown(id="x_axis", options=columns, value="Age", clearable=False)
-y_axis = dcc.Dropdown(id="y_axis", options=columns, value="Fare", clearable=False)
-
+x_axis = dcc.Dropdown(id="x_axis", options=columns, value=columns.tolist()[0], clearable=False)
+y_axis = dcc.Dropdown(id="y_axis", options=columns, value=columns.tolist()[1], clearable=False)
 
 layout = html.Div(children=[
     html.Br(),
@@ -26,7 +30,6 @@ layout = html.Div(children=[
     "Y-Axis", y_axis,
     dcc.Graph(id="scatter")
 ])
-
 
 
 @callback(Output("scatter", "figure"), [Input("x_axis", "value"), Input("y_axis", "value"), ])

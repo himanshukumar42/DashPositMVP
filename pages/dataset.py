@@ -9,11 +9,12 @@ from dash import html, dash_table, dcc, callback
 import dash_bootstrap_components as dbc
 import uuid
 
-dash.register_page(__name__, path='/dataset', name="Dataset 📋")
+dash.register_page(__name__, title="dataset", path='/dataset', name="Dataset 📋")
+
+df = None
 
 layout = html.Div(children=[
     html.Br(),
-    dcc.Location(id='url', refresh=False),
     dcc.Upload(
         id='upload-data',
         children=html.Div([
@@ -40,29 +41,31 @@ layout = html.Div(children=[
                          style_header={"background-color": "dodgerblue", "font-weight": "bold", "color": "white",
                                        "padding": "10px", "font-size": "18px"},
                          ),
-    dcc.Store(id='data-store', storage_type='memory', data=None)
 ])
 
 
-@callback(Output('data-store', 'data'), [Input('upload-data', 'contents')])
-def upload_data_store(contents):
-    if contents is None:
-        return None
+def parse_contents(contents):
     content_type, content_string = contents.split(',')
 
     decoded = base64.b64decode(content_string)
+    global df
     df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
 
-    return df.to_json()
-
-
-@callback(Output('datatable', 'data'), [Input('data-store', 'data')])
-def update_table(data_store):
-    if data_store is None:
-        return []
-
-    import pdb; pdb.set_trace()
-    df = pd.read_json(io.StringIO(data_store))
-    file_path = f'{os.getcwd()}/data/uploaded_file_{uuid.uuid4()}.csv'
-    df.to_csv(file_path, index=False)
+    try:
+        file_path = os.path.join(os.getcwd(), "data", 'uploaded_file.csv')
+        df.to_csv(file_path, index=False)
+    except Exception as e:
+        print(str(e))
+        df = None
     return df.to_dict('records')
+
+
+@callback(Output('datatable', 'data'), [Input('upload-data', 'contents')])
+def update_table(contents):
+    if contents is None:
+        global df
+        df = pd.read_csv(os.path.join(os.getcwd(), "data", "uploaded_file.csv")).to_dict('records')
+        return df
+
+    children = parse_contents(contents)
+    return children

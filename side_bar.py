@@ -1,4 +1,3 @@
-# Code source: https://dash-bootstrap-components.opensource.faculty.ai/examples/simple-sidebar/
 import dash
 import dash_bootstrap_components as dbc
 import dash_html_components as html
@@ -7,14 +6,11 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
 
-# data source: https://www.kaggle.com/chubak/iranian-students-from-1968-to-2017
-# data owner: Chubak Bidpaa
 df = pd.read_csv(
     'https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-# styling the sidebar
 SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
@@ -25,7 +21,6 @@ SIDEBAR_STYLE = {
     "background-color": "#f8f9fa",
 }
 
-# padding for the page content
 CONTENT_STYLE = {
     "margin-left": "18rem",
     "margin-right": "2rem",

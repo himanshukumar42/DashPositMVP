@@ -8,7 +8,11 @@ import pandas as pd
 df = pd.read_csv(
     'https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
 
-app = dash.Dash(__name__, pages_folder='pages', use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, pages_folder='pages',
+                title="Dash Main Page",
+                use_pages=True,
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                suppress_callback_exceptions=True)
 
 SIDEBAR_STYLE = {
     "position": "fixed",
@@ -35,11 +39,11 @@ sidebar = html.Div(
         ),
         dbc.Nav(
             [
-                dbc.NavLink("Home", href="/intro", active="exact"),
-                dbc.NavLink("Dataset", href="/dataset", active="exact"),
-                dbc.NavLink("Relationship", href="/relationship", active="exact"),
-                dbc.NavLink("Distribution", href="/distribution", active="exact"),
-                dbc.NavLink("Survived", href="/survived", active="exact"),
+                dbc.NavLink("Home", href="intro", active="exact"),
+                dbc.NavLink("Dataset", href="dataset", active="exact"),
+                dbc.NavLink("Relationship", href="relationship", active="exact"),
+                dbc.NavLink("Distribution", href="distribution", active="exact"),
+                dbc.NavLink("Survived", href="survived", active="exact"),
 
             ],
             vertical=True,
@@ -67,19 +71,20 @@ def render_page_content(pathname):
         return [
             html.Br(),
             html.Div(children=[
-                dcc.Link(page['name'], href=page['relative_path'], className='btn btn-dark m-2 fs-5')
+                dcc.Link(page['name'], href=page['relative_path'], className='btn btn-primary m-2 fs-5')
                 for page in dash.page_registry.values()
             ]),
             dash.page_container
         ]
-    return dbc.Jumbotron(
-        [
-            html.H1("404: Not found", className="text-danger"),
-            html.Hr(),
-            html.P(f"The pathname {pathname} was not recognised..."),
-        ]
-    )
+    return []
+    # return dbc.Jumbotron(
+    #     [
+    #         html.H1("404: Not found", className="text-danger"),
+    #         html.Hr(),
+    #         html.P(f"The pathname {pathname} was not recognised..."),
+    #     ]
+    # )
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=3000)
+    app.run_server(debug=True)
